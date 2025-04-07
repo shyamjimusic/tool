@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text to Song - Futuristic Creator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #1a1a2e, #16213e);
+      color: #ffffff;
+      font-family: 'Audiowide', cursive;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      margin-bottom: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+    }
+    h1 {
+      color: #00ffe0;
+      text-shadow: 0 0 20px #00ffe0, 0 0 30px #00ffe0;
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    h1 img {
+      height: 40px;
+    }
+    h2 {
+      color: #ff4fe2;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .upload-area {
+      border: 2px dashed #00ffe0;
+      padding: 30px;
+      text-align: center;
+      background: rgba(0, 255, 255, 0.05);
+      transition: 0.3s;
+      border-radius: 15px;
+    }
+    .upload-area:hover {
+      border-color: #ff4fe2;
+      box-shadow: 0 0 20px #ff4fe2;
+    }
+    input, select, textarea {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 15px 30px;
+      background: linear-gradient(45deg, #00ffe0, #ff4fe2);
+      color: #000000;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-size: 1rem;
+      margin-right: 10px;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff4fe2;
+    }
+    .lyrics-output {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #00ffe0;
+      color: #ffffff;
+      white-space: pre-line;
+      margin-top: 20px;
+    }
+    .file-item {
+      background: rgba(0, 255, 255, 0.05);
+      padding: 15px;
+      border: 1px solid #00ffe0;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .file-item video, .file-item audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #00ffe0;
+      font-size: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 20px;
+    }
+    .instrument-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .instrument-list label {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .instrument-list label:hover {
+      background: rgba(0, 255, 255, 0.2);
+    }
+    .download-options {
+      margin-top: 20px;
+    }
+    #songPreview {
+      margin-top: 20px;
+    }
+    .youtube-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .youtube-link a {
+      color: #ff4fe2;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <img src="/mnt/data/20250406_175622.png" alt="Shyam Ji Music Logo" />
+      TEXT TO SONG - OWESOME SONG GENRATE
+    </h1>
+
+    <!-- Upload Section -->
+    <div class="section">
+      <h2>Your Audio Input Thought</h2>
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <p class="pulse">Upload Audio/Video Files</p>
+        <input type="file" id="fileInput" accept="audio/*,video/*" multiple style="display: none;" onchange="handleFileUpload(event)">
+      </div>
+      <div id="fileList"></div>
+    </div>
+
+    <!-- Music Style Section -->
+    <div class="section">
+      <h2>Music Style</h2>
+      <select id="style">
+        <option value="bhakti">Bhakti</option>
+        <option value="bollywood">Bollywood</option>
+        <option value="bhojpuri">Bhojpuri</option>
+        <option value="punjabi">Punjabi</option>
+      </select>
+      <textarea id="lyricsPrompt" placeholder="Enter your lyrics or inspiration here..." rows="4"></textarea>
+
+      <h3 style="color:#00ffe0; margin-top: 20px;">Select Instruments</h3>
+      <div class="instrument-list">
+        <label><input type="checkbox" value="Dholak"> Dholak</label>
+        <label><input type="checkbox" value="Tabla"> Tabla</label>
+        <label><input type="checkbox" value="Harmonium"> Harmonium</label>
+        <label><input type="checkbox" value="Ghunghroo"> Ghunghroo</label>
+        <label><input type="checkbox" value="Bells"> Bells</label>
+        <label><input type="checkbox" value="Dhol"> Dhol</label>
+        <label><input type="checkbox" value="Nagada"> Nagada</label>
+        <label><input type="checkbox" value="Piano"> Piano</label>
+        <label><input type="checkbox" value="Duff"> Duff</label>
+        <label><input type="checkbox" value="Sarangi"> Sarangi</label>
+        <label><input type="checkbox" value="Manjira"> Manjira</label>
+        <label><input type="checkbox" value="Hit-hat"> Hit-hat</label>
+      </div>
+
+      <button onclick="generateMusic()">Generate Song</button>
+
+      <div class="download-options">
+        <button onclick="downloadMP3()">Download MP3</button>
+        <button onclick="downloadMP4()">Download MP4</button>
+      </div>
+
+      <div class="lyrics-output" id="lyricsOutput"></div>
+      <div id="songPreview"></div>
+    </div>
+
+    <div class="youtube-link">
+      <h2>🎬 Visit My YouTube Channel</h2>
+      <a href="https://youtube.com/@shyamjimusic?si=XsJGvU9y4XSwvCIn" target="_blank">
+        https://youtube.com/@shyamjimusic?si=XsJGvU9y4XSwvCIn
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    CREATED BY - SHYAM JI MUSIC | CONTACT - musicshyamji@gmail.com
+  </footer>
+
+  <script>
+    function generateMusic() {
+      const previewURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+      const output = document.getElementById("songPreview");
+      output.innerHTML = `<audio controls><source src="${previewURL}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+    }
+
+    function downloadMP3() {
+      alert("MP3 download will start (functionality to be implemented)");
+    }
+
+    function downloadMP4() {
+      alert("MP4 download will start (functionality to be implemented)");
+    }
+  </script>
+</body>
+</html>
